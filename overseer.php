@@ -35,11 +35,9 @@ if (!array_key_exists(CONFIG_INDEX_WATCHFILE, $config)) {
 
 $checkers = array();
 foreach ($config[CONFIG_INDEX_WATCHFILE] as $fileToWatch) {
-    $checkers[] = new FileChecker($config[CONFIG_INDEX_NAME], $fileToWatch, $config[CONFIG_INDEX_EMAIL]);
-}
-
-foreach ($checkers as $checker) {
+    echo "Checking file '$fileToWatch'\n";
+    $checker = new FileChecker($config[CONFIG_INDEX_NAME], $fileToWatch, $config[CONFIG_INDEX_EMAIL]);
     $checker->check();
 }
 
-echo "\n\nOK\n";
+echo "\nOK\n";

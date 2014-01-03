@@ -9,6 +9,7 @@ class FileChecker
 {
 
     const BACKUP_AFFIX = '.overseer_backup';
+    const BACKUP_DIR = '/.overseer/';
 
     private $emails = array();
 
@@ -37,6 +38,10 @@ class FileChecker
     public function check()
     {
         $diff = null;
+
+        if (!file_exists($_SERVER['HOME'] . self::BACKUP_DIR)) {
+            mkdir($_SERVER['HOME'] . self::BACKUP_DIR);
+        }
 
         if (!file_exists($this->nameOfFileToCheck)) {
             return;
@@ -74,7 +79,13 @@ class FileChecker
 
     private function generateBackupNameForFile($filename)
     {
-        return $filename . self::BACKUP_AFFIX;
+        $hashDir = $_SERVER['HOME'] . self::BACKUP_DIR . md5($filename);
+
+        if (!file_exists($hashDir)) {
+            mkdir($hashDir);
+        }
+
+        return $hashDir . '/' . basename($filename) . self::BACKUP_AFFIX;
     }
 
 }
