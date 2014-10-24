@@ -11,5 +11,8 @@
             "email": "vaclav.novotny@edgedesign.cz"
         }
     ],
+    "autoload": {
+        "psr-4": {"Edge\\Overseer\\": "src/"}
+    },
     "minimum-stability": "stable"
 }
