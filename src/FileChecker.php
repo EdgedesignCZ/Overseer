@@ -2,9 +2,6 @@
 
 namespace Edge\Overseer;
 
-/**
- * @author VeN <vaclav.novotny@edgedesign.cz>
- */
 class FileChecker
 {
 
@@ -12,28 +9,20 @@ class FileChecker
     const BACKUP_DIR = '/.overseer/';
 
     private $emails = array();
-
+    private $ignore;
     private $name;
-
     private $nameOfFileToCheck;
 
-    ////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
-
-    public function __construct($name, $fileName, array $emails)
+    public function __construct($name, $fileName, array $emails, array $ignore = array())
     {
         $this->name = $name;
         $this->nameOfFileToCheck = $fileName;
+        $this->ignore = $ignore;
 
         foreach ($emails as $email) {
             $this->emails[] = str_replace("\n", '', $email);
         }
     }
-
-    ////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
 
     public function check()
     {
@@ -58,15 +47,11 @@ class FileChecker
         }
 
         if ($diff) {
-            $this->sendDiff($diff);
+            $this->sendDiff($this->filterOutIgnoredLines($diff));
         }
 
         copy($this->nameOfFileToCheck, $backupFileName);
     }
-
-    ////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
 
     private function sendDiff($diff)
     {
@@ -86,6 +71,17 @@ class FileChecker
         }
 
         return $hashDir . '/' . basename($filename) . self::BACKUP_AFFIX;
+    }
+
+    private function filterOutIgnoredLines($text)
+    {
+        $grep = new Grep();
+        $filtered = '';
+        foreach ($this->ignore as $i) {
+            $filtered .= $grep->invertGrep($i, $text);
+        }
+
+        return $filtered;
     }
 
 }

@@ -3,12 +3,13 @@
 
 namespace Edge\Overseer;
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 define('CONFIG_FILE', __DIR__ . '/config/config.ini');
 define('CONFIG_INDEX_EMAIL', 'email');
+define('CONFIG_INDEX_IGNORE', 'ignore');
 define('CONFIG_INDEX_NAME', 'name');
 define('CONFIG_INDEX_WATCHFILE', 'watchfile');
-
-require_once __DIR__ . '/FileChecker.php';
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +37,15 @@ if (!array_key_exists(CONFIG_INDEX_WATCHFILE, $config)) {
 $checkers = array();
 foreach ($config[CONFIG_INDEX_WATCHFILE] as $fileToWatch) {
     echo "Checking file '$fileToWatch'\n";
-    $checker = new FileChecker($config[CONFIG_INDEX_NAME], $fileToWatch, $config[CONFIG_INDEX_EMAIL]);
+
+    $ignoreList = array_key_exists(CONFIG_INDEX_IGNORE, $config) ? $config[CONFIG_INDEX_IGNORE] : array();
+
+    $checker = new FileChecker(
+        $config[CONFIG_INDEX_NAME],
+        $fileToWatch,
+        $config[CONFIG_INDEX_EMAIL],
+        $ignoreList
+    );
     $checker->check();
 }
 
