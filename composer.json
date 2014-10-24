@@ -1,0 +1,15 @@
+{
+    "name": "edgedesign/overseer",
+    "description": "Overseer is simple-to-use tool for watching files and sending new content in them via e-mail messages.",
+    "require": {
+        "phpunit/phpunit": "~4.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vaclav Novotny",
+            "email": "vaclav.novotny@edgedesign.cz"
+        }
+    ],
+    "minimum-stability": "stable"
+}
