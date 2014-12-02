@@ -9,7 +9,7 @@ class FileChecker
     const BACKUP_DIR = '/.overseer/';
 
     private $emails = array();
-    private $ignore;
+    private $grep;
     private $name;
     private $nameOfFileToCheck;
 
@@ -17,7 +17,7 @@ class FileChecker
     {
         $this->name = $name;
         $this->nameOfFileToCheck = $fileName;
-        $this->ignore = $ignore;
+        $this->grep = new Grep($ignore);
 
         foreach ($emails as $email) {
             $this->emails[] = str_replace("\n", '', $email);
@@ -47,7 +47,8 @@ class FileChecker
         }
 
         if ($diff) {
-            $this->sendDiff($this->filterOutIgnoredLines($diff));
+            $filtered = $this->grep->filterOutIgnoredLines($diff);
+            $this->sendDiff($filtered);
         }
 
         copy($this->nameOfFileToCheck, $backupFileName);
@@ -72,16 +73,4 @@ class FileChecker
 
         return $hashDir . '/' . basename($filename) . self::BACKUP_AFFIX;
     }
-
-    private function filterOutIgnoredLines($text)
-    {
-        $grep = new Grep();
-        $filtered = '';
-        foreach ($this->ignore as $i) {
-            $filtered .= $grep->invertGrep($i, $text);
-        }
-
-        return $filtered;
-    }
-
 }
