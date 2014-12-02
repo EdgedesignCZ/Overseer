@@ -46,9 +46,9 @@ class FileChecker
             $diff = ob_get_clean();
         }
 
-        if ($diff) {
-            $filtered = $this->grep->filterOutIgnoredLines($diff);
-            $this->sendDiff($filtered);
+        $filteredDiff = $this->grep->filterOutIgnoredLines($diff);
+        if ($filteredDiff) {            
+            $this->sendDiff($filteredDiff);
         }
 
         copy($this->nameOfFileToCheck, $backupFileName);
