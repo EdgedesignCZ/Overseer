@@ -13,14 +13,14 @@ class Grep
 
     public function diffFiles($currentVersion, $previousFile)
     {
-        if (file_exists($previousFile)) {
+        if (!file_exists($currentVersion)) {
+            $diff = '';
+        } elseif (file_exists($previousFile)) {
             ob_start();
             passthru("diff {$previousFile} {$currentVersion} | grep '>'");
             $diff = ob_get_clean();
-        } elseif (file_exists($currentVersion)) {
-            $diff = file_get_contents($currentVersion);
         } else {
-            $diff = '';
+            $diff = file_get_contents($currentVersion);
         }
         return $this->filterOutIgnoredLines($diff);
     }

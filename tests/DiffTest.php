@@ -15,9 +15,22 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $this->nonExistentFile = __DIR__ . "/non-existent-file";
     }
 
-    public function testEmptyResultWhenNoFileExists()
+    public function testEmptyDiffWhenNoFileExists()
     {
-        assertThat($this->diff->diffFiles($this->nonExistentFile, $this->nonExistentFile), is(emptyString()));
+        $this->assertEmptyDiff($this->nonExistentFile, $this->nonExistentFile);
+    }
+
+    public function testEmptyDiffWhenFileWasDeleted()
+    {
+        $previousFile = $this->createFile('previous', ["Hello\n"]);
+        $this->assertEmptyDiff($this->nonExistentFile, $previousFile);
+    }
+
+    public function testEmptyDiffWhenFileWasCleared()
+    {
+        $currentFile = $this->createFile('current', []);
+        $previousFile = $this->createFile('previous', ["Hello", "World"]);
+        $this->assertEmptyDiff($currentFile, $previousFile);
     }
 
     public function testShouldReturnFileContentWhenBackupDoesNotExist()
@@ -41,6 +54,11 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         file_put_contents($path, $content);
         $this->createdFiles[] = $path;
         return $path;
+    }
+
+    private function assertEmptyDiff($currentFile, $previousFile)
+    {
+        assertThat($this->diff->diffFiles($currentFile, $previousFile), is(emptyString()));
     }
 
     protected function tearDown()
