@@ -39,7 +39,7 @@ class FileChecker
         $backupFileName = $this->generateBackupNameForFile($this->nameOfFileToCheck);
 
         if (!file_exists($backupFileName)) {
-            $diff = file_get_contents($this->nameOfFileToCheck);
+            $diff = $this->grep->diffFiles($this->nameOfFileToCheck, $backupFileName);
         } else {
             ob_start();
             passthru("diff $backupFileName $this->nameOfFileToCheck | grep '>'");

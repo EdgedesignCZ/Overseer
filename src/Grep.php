@@ -11,6 +11,16 @@ class Grep
         $this->ignoredPatterns = $ignoredPatterns;
     }
 
+    public function diffFiles($currentVersion, $previousFile)
+    {
+        if (file_exists($previousFile)) {
+        } elseif (file_exists($currentVersion)) {
+            return file_get_contents($currentVersion);
+        } else {
+            return '';
+        }
+    }
+
     public function filterOutIgnoredLines($text)
     {
         return array_reduce(
