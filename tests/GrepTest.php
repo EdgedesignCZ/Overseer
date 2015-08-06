@@ -7,7 +7,7 @@ class GrepTest extends \PHPUnit_Framework_TestCase
     /** @dataProvider text2GrepProvider */
     public function testShouldIgnoreRegexp($ignoredExpressions, $sourceText, $expectedText)
     {
-        $this->grep = new Grep($ignoredExpressions);
+        $this->grep = new Diff($ignoredExpressions);
         $this->assertSame($expectedText, $this->grep->filterOutIgnoredLines($sourceText));
     }
 
