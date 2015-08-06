@@ -1,7 +1,7 @@
 
 # Overseer
 
-[![Dependency Status](https://www.versioneye.com/user/projects/55c2f4d96537620020002945/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55c2f4d96537620020002945)
+[![Dependency Status](https://www.versioneye.com/user/projects/55c306ab6537620017002b5e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55c306ab6537620017002b5e)
 
 Overseer is simple-to-use tool for watching files and sending new content in them via e-mail messages.
 
