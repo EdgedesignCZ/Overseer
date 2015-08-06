@@ -13,7 +13,8 @@
         }
     ],
     "require-dev": {
-        "phpunit/phpunit": "~4.3"
+        "phpunit/phpunit": "~4.3",
+        "hamcrest/hamcrest-php": "~1.2"
     },
     "autoload": {
         "psr-4": {"Edge\\Overseer\\": "src/"}

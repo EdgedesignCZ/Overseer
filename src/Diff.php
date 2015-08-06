@@ -2,13 +2,27 @@
 
 namespace Edge\Overseer;
 
-class Grep
+class Diff
 {
     private $ignoredPatterns;
 
     public function __construct(array $ignoredPatterns)
     {
         $this->ignoredPatterns = $ignoredPatterns;
+    }
+
+    public function diffFiles($currentVersion, $previousFile)
+    {
+        if (!file_exists($currentVersion)) {
+            $diff = '';
+        } elseif (file_exists($previousFile)) {
+            ob_start();
+            passthru("diff {$previousFile} {$currentVersion} | grep '>'");
+            $diff = ob_get_clean();
+        } else {
+            $diff = file_get_contents($currentVersion);
+        }
+        return $this->filterOutIgnoredLines($diff);
     }
 
     public function filterOutIgnoredLines($text)

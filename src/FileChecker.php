@@ -17,7 +17,7 @@ class FileChecker
     {
         $this->name = $name;
         $this->nameOfFileToCheck = $fileName;
-        $this->grep = new Grep($ignore);
+        $this->grep = new Diff($ignore);
 
         foreach ($emails as $email) {
             $this->emails[] = str_replace("\n", '', $email);
@@ -26,31 +26,17 @@ class FileChecker
 
     public function check()
     {
-        $diff = null;
-
         if (!file_exists($_SERVER['HOME'] . self::BACKUP_DIR)) {
             mkdir($_SERVER['HOME'] . self::BACKUP_DIR);
         }
-
         if (!file_exists($this->nameOfFileToCheck)) {
             return;
         }
-
         $backupFileName = $this->generateBackupNameForFile($this->nameOfFileToCheck);
-
-        if (!file_exists($backupFileName)) {
-            $diff = file_get_contents($this->nameOfFileToCheck);
-        } else {
-            ob_start();
-            passthru("diff $backupFileName $this->nameOfFileToCheck | grep '>'");
-            $diff = ob_get_clean();
+        $diff = $this->grep->diffFiles($this->nameOfFileToCheck, $backupFileName);
+        if ($diff) {            
+            $this->sendDiff($diff);
         }
-
-        $filteredDiff = $this->grep->filterOutIgnoredLines($diff);
-        if ($filteredDiff) {            
-            $this->sendDiff($filteredDiff);
-        }
-
         copy($this->nameOfFileToCheck, $backupFileName);
     }
 
