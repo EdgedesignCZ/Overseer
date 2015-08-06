@@ -10,7 +10,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->diff = new Grep(array());
+        $this->diff = new Diff(array());
         $this->createdFiles = array();
         $this->nonExistentFile = __DIR__ . "/non-existent-file";
     }

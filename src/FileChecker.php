@@ -17,7 +17,7 @@ class FileChecker
     {
         $this->name = $name;
         $this->nameOfFileToCheck = $fileName;
-        $this->grep = new Grep($ignore);
+        $this->grep = new Diff($ignore);
 
         foreach ($emails as $email) {
             $this->emails[] = str_replace("\n", '', $email);

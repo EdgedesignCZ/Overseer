@@ -2,7 +2,7 @@
 
 namespace Edge\Overseer;
 
-class Grep
+class Diff
 {
     private $ignoredPatterns;
 
