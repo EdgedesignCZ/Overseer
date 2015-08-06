@@ -26,8 +26,6 @@ class FileChecker
 
     public function check()
     {
-        $diff = null;
-
         if (!file_exists($_SERVER['HOME'] . self::BACKUP_DIR)) {
             mkdir($_SERVER['HOME'] . self::BACKUP_DIR);
         }
@@ -38,14 +36,7 @@ class FileChecker
 
         $backupFileName = $this->generateBackupNameForFile($this->nameOfFileToCheck);
 
-        if (!file_exists($backupFileName)) {
-            $diff = $this->grep->diffFiles($this->nameOfFileToCheck, $backupFileName);
-        } else {
-            ob_start();
-            passthru("diff $backupFileName $this->nameOfFileToCheck | grep '>'");
-            $diff = ob_get_clean();
-        }
-
+        $diff = $this->grep->diffFiles($this->nameOfFileToCheck, $backupFileName);
         $filteredDiff = $this->grep->filterOutIgnoredLines($diff);
         if ($filteredDiff) {            
             $this->sendDiff($filteredDiff);

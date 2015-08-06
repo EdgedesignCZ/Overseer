@@ -23,12 +23,20 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     public function testShouldReturnFileContentWhenBackupDoesNotExist()
     {
         $fileContent = 'hello';
-        $currentFile = $this->createFile('current', $fileContent);
+        $currentFile = $this->createFile('current', [$fileContent]);
         assertThat($this->diff->diffFiles($currentFile, $this->nonExistentFile), is($fileContent));
     }
 
-    private function createFile($filename, $content)
+    public function testShouldDiffFileContents()
     {
+        $currentFile = $this->createFile('current', ['Hello', 'World']);
+        $previousFile = $this->createFile('previous', ["Hello\n"]);
+        assertThat($this->diff->diffFiles($currentFile, $previousFile), is("> World\n"));
+    }
+
+    private function createFile($filename, array $lines)
+    {
+        $content = implode("\n", $lines);
         $path = __DIR__ . "/{$filename}";
         file_put_contents($path, $content);
         $this->createdFiles[] = $path;
