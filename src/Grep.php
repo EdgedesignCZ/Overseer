@@ -16,12 +16,13 @@ class Grep
         if (file_exists($previousFile)) {
             ob_start();
             passthru("diff {$previousFile} {$currentVersion} | grep '>'");
-            return ob_get_clean();
+            $diff = ob_get_clean();
         } elseif (file_exists($currentVersion)) {
-            return file_get_contents($currentVersion);
+            $diff = file_get_contents($currentVersion);
         } else {
-            return '';
+            $diff = '';
         }
+        return $this->filterOutIgnoredLines($diff);
     }
 
     public function filterOutIgnoredLines($text)

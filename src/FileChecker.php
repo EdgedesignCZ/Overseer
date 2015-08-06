@@ -29,19 +29,14 @@ class FileChecker
         if (!file_exists($_SERVER['HOME'] . self::BACKUP_DIR)) {
             mkdir($_SERVER['HOME'] . self::BACKUP_DIR);
         }
-
         if (!file_exists($this->nameOfFileToCheck)) {
             return;
         }
-
         $backupFileName = $this->generateBackupNameForFile($this->nameOfFileToCheck);
-
         $diff = $this->grep->diffFiles($this->nameOfFileToCheck, $backupFileName);
-        $filteredDiff = $this->grep->filterOutIgnoredLines($diff);
-        if ($filteredDiff) {            
-            $this->sendDiff($filteredDiff);
+        if ($diff) {            
+            $this->sendDiff($diff);
         }
-
         copy($this->nameOfFileToCheck, $backupFileName);
     }
 
