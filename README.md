@@ -13,7 +13,7 @@ Overseer is simple-to-use tool for watching files and sending new content in the
 
 ## Usage
 
-1. Clone repository: `git clone git@bitbucket.org:edgedesigncz/overseer.git`
+1. Clone repository: `git clone git@github.com:EdgedesignCZ/Overseer.git`
 2. Copy default configuration: `cp config/config.default.ini config/config.ini`
 3. Configure overseer: `nano config/config.ini`
 4. Install: `composer install --no-dev`
